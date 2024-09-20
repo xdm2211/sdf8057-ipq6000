@@ -35,7 +35,6 @@ tools-$(CONFIG_TARGET_ar71xx)$(CONFIG_TARGET_ath79) += squashfs
 tools-$(CONFIG_TARGET_mxs) += elftosb sdimage
 tools-$(CONFIG_TARGET_orion_generic) += wrt350nv2-builder upslug2
 tools-$(CONFIG_TARGET_tegra) += cbootimage cbootimage-configs
-tools-y += ucl upx
 tools-$(CONFIG_TARGET_x86) += qemu
 tools-$(CONFIG_USE_SPARSE) += sparse
 tools-$(CONFIG_USES_MINOR) += kernel2minor

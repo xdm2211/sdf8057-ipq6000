@@ -7,29 +7,56 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=upx
-PKG_VERSION:=3.95
+PKG_VERSION:=4.2.2
+PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-src.tar.xz
-PKG_SOURCE_URL:=https://github.com/upx/upx/releases/download/v$(PKG_VERSION)
-PKG_HASH:=3b0f55468d285c760fcf5ea865a070b27696393002712054c69ff40d8f7f5592
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_URL:=https://github.com/upx/upx.git
+PKG_SOURCE_VERSION:=099c3d829e80488af7395a4242b318877e980da4
+PKG_MIRROR_HASH:=8bee3cd1ada2e4bfbe396348d2aecb3e044f92cdae2b7010838e36997fe6b3c3
 
-HOST_BUILD_DIR:=$(BUILD_DIR_HOST)/$(PKG_NAME)-$(PKG_VERSION)-src
+PKG_MAINTAINER:=Xingwang Liao <kuoruan@gmail.com>
+PKG_LICENSE:=GPL-2.0-only
+PKG_LICENSE_FILES:=COPYING LICENSE
 
+HOST_BUILD_DEPENDS:=ucl/host
+MAKE_PATH:=src
+
+include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/host-build.mk
+
+define Package/upx
+  SECTION:=utils
+  CATEGORY:=Utilities
+  DEPENDS:=+libucl +libstdcpp +zlib
+  TITLE:=The Ultimate Packer for eXecutables
+  URL:=https://upx.github.io/
+endef
+
+define Package/upx/description
+UPX is a free, secure, portable, extendable, high-performance
+executable packer for several executable formats.
+endef
 
 define Host/Compile
 	UPX_UCLDIR=$(STAGING_DIR_HOST) \
 	$(MAKE) -C $(HOST_BUILD_DIR)/src \
-		CXXFLAGS_WERROR="" LDFLAGS="$(HOST_LDFLAGS)" \
+		LDFLAGS="$(HOST_LDFLAGS)" \
 		CXX="$(HOSTCXX)"
 endef
 
 define Host/Install
-	$(CP) $(HOST_BUILD_DIR)/src/upx.out $(STAGING_DIR_HOST)/bin/upx
+	$(CP) $(HOST_BUILD_DIR)/build/release/upx $(STAGING_DIR_HOST)/bin/upx
 endef
 
 define Host/Clean
 	rm -f $(STAGING_DIR_HOST)/bin/upx
 endef
 
+define Package/upx/install
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/build/release/upx $(1)/usr/bin/upx
+endef
+
 $(eval $(call HostBuild))
+$(eval $(call BuildPackage,upx))

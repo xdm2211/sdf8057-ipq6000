@@ -26,8 +26,8 @@
 3. 下载源代码，更新 feeds 并选择配置
 
    ```bash
-   git clone -b master --single-branch https://github.com/sdf8057/ipq6000.git
-   cd ipq6000
+   git clone -b master --single-branch https://github.com/xdm2211/sdf8057-ipq6000.git
+   cd sdf8057-ipq6000
    ./scripts/feeds update -a && ./scripts/feeds install -a
    make menuconfig
    ```
@@ -43,7 +43,7 @@
 5. 二次编译：
 
    ```bash
-   cd ipq6000
+   cd sdf8057-ipq6000
    git fetch && git reset --hard origin/master
    ./scripts/feeds update -a && ./scripts/feeds install -a
    make defconfig
@@ -59,3 +59,4 @@
    ```
 
 7. 编译完成后输出路径：bin/targets
+
